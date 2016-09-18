@@ -1,0 +1,139 @@
+<h1 class="text-center"> {{title}} </h1>
+<hr>
+<div class="container">
+	<div class="col-md-6">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				Publication Author Management
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label>Publication Title</label>
+					<textarea [(ngModel)]="publication.title" class="form-control" rows="4"></textarea>
+				</div>
+				<div *ngIf="publication && publication.authors.length > 0" class="panel panel-info">
+					<div class="panel-body">
+						<span *ngFor="let author of publication.authors; let i = index; let f = first; let l = last">
+							<p>
+								<span class="sort-order pull-left">
+									<span *ngIf="f">
+										<a (click)="down(i)" class="btn btn-default btn-xs">
+											<i class="fa fa-angle-down" aria-hidden="true"></i>
+										</a>
+									</span>
+									<span [hidden]="publication.authors.length==1">
+										<span *ngIf="!f && !l">
+											<a (click)="up(i)" class="btn btn-default btn-xs">
+												<i class="fa fa-angle-up" aria-hidden="true"></i>
+											</a>
+											<a (click)="down(i)" class="btn btn-default btn-xs">
+												<i class="fa fa-angle-down" aria-hidden="true"></i>
+											</a>
+										</span>
+									</span>
+									<span *ngIf="l">
+										<a (click)="up(i)" class="btn btn-default btn-xs">
+											<i class="fa fa-angle-up" aria-hidden="true"></i>
+										</a>
+									</span>
+								</span>
+								&emsp;
+								{{ author.name }}
+								<label *ngFor="let authAff of author.affiliations" class="label label-default label-xs">
+									{{ authAff.name }}
+								</label>
+								<span class="pull-right">
+									<input (click)="editAuthor(author)" type="button" class="btn btn-default btn-xs" value="Edit">&nbsp;
+									<a (click)="deleteAuthor(author)" type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>&nbsp;
+								</span>
+							</p>
+						</span>
+					</div>
+				</div>
+				<div *ngIf="publication.authors && publication.authors.length == 0" class="panel panel-info">
+					<div class="panel-body">
+						<p><i>No Authors yet</i></p>
+					</div>
+				</div>
+				<div class="well">
+					<div class="form-group">
+						<label>Author Name</label>
+						<input [(ngModel)]="selectedAuthor.name" type="text" class="form-control">
+					</div>
+					<label>Affiliation Details</label>
+					<div *ngIf="selectedAuthor.affiliations.length > 0">
+						<label class="label label-default" *ngFor="let selAff of selectedAuthor.affiliations">
+							{{ selAff.name }}
+						</label>
+						<hr>
+					</div>
+					<div class="well">
+						<div *ngIf="affiliations && affiliations.length>0">
+							<div class="input-group">
+								<select #selectedAffiliation class="form-control">
+									<option *ngFor="let aff of affiliations" [value]="aff.id">
+										{{ aff.name }}
+									</option>
+								</select>
+								<span class="input-group-btn">
+									<button (click)="addAffiliation(selectedAffiliation.value); " class="btn btn-default" type="button">Add</button>
+								</span>
+							</div>
+							<p class="text-center"><small><i>or</i></small></p>
+						</div>
+						<div class="input-group">
+							<input #affiliation type="text" class="form-control">
+							<span class="input-group-btn">
+								<button (click)="saveAffiliation(affiliation.value); affiliation.value=''" class="btn btn-default" type="button">Save New Affiliation</button>
+							</span>
+						</div>
+					</div>
+
+					<br>
+					<div class="form-group">
+						<button (click)="addAuthor();" class="btn btn-default" type="button">Save Author</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<input class="form-control btn btn-success" type="button" value="Save Details">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div *ngIf="publication.title == ''" >
+			<div class="alert alert-danger">
+				<strong>Title</strong> field cannot be empty
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h1 class="title">{{publication.title}}</h1><br>
+				<div *ngIf="publication.authors && publication.authors.length > 0">
+					<p>
+						<span class="author" *ngFor="let author of publication.authors; let j = index">
+							<span *ngIf="j > 0">,</span>
+							{{ author.name }}
+							<sup *ngFor="let aff of author.affiliations; let i = index" class="author-sups">
+								<span *ngIf="i > 0">,</span>
+								{{aff.id}}
+							</sup>
+						</span>
+					</p>
+				</div>
+				<div *ngIf="publication.affiliations && publication.affiliations.length > 0">
+					<p>
+						<span class="author" *ngFor="let aff of publication.affiliations; let j = index">
+							<span *ngIf="j > 0">,</span>
+							<sup class="affiliation-subs">{{ aff.id }}</sup>
+							{{ aff.name }}
+						</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			{{ publication | json }}
+		</div>
+	</div>
+</div>

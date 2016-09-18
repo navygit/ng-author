@@ -1,0 +1,30 @@
+.title{
+	font-size: 30px;
+	margin: 0;
+	padding: 0;
+}
+
+.author{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.author-sups{
+	font-size: 16px;
+}
+
+.affiliation{
+	font-size: 12px;
+}
+
+.affiliation-subs{
+	font-size: 12px;
+}
+
+.label{
+	margin-right: 10px;
+}
+
+.sort-order{
+	width: 50px;
+}
